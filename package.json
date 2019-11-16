@@ -1,0 +1,57 @@
+{
+    "name": "cinefile-r-us",
+    "version": "1.0.0",
+    "description": "this is a fullstack application using node.js, react.js, express.js, mySQL, and sequelize ORM",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+        "start:prod": "node server.js",
+        "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+        "client": "cd client && npm run start",
+        "install": "cd client && npm install",
+        "build": "cd client && npm run build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/BlackMG27/cinefile-r-us.git"
+    },
+    "keywords": [
+        "react.js",
+        "node.js.",
+        "movies",
+        "express.js",
+        "mySQL",
+        "sequelize",
+        "ORM"
+    ],
+    "author": "Ogechi Ike",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/BlackMG27/cinefile-r-us/issues"
+    },
+    "homepage": "https://github.com/BlackMG27/cinefile-r-us#readme",
+    "dependencies": {
+        "axios": "^0.19.0",
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.19.0",
+        "concurrently": "^5.0.0",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "if-env": "^1.0.4",
+        "is-empty": "^1.2.0",
+        "jsonwebtoken": "^8.5.1",
+        "mysql2": "^1.7.0",
+        "passport": "^0.4.0",
+        "passport-jwt": "^4.0.0",
+        "path": "^0.12.7",
+        "semantic-ui-react": "^0.88.1",
+        "sequelize": "^5.21.1",
+        "simple-react-validator": "^1.2.4",
+        "validator": "^12.0.0"
+    },
+    "devDependencies": {
+        "nodemon": "^1.19.4",
+        "sequelize-cli": "^5.5.1"
+    }
+}

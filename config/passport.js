@@ -1,0 +1,37 @@
+//set up our variables
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const JwtStrategy = require("passport-jwt").Strategy;
+const ExtractJwt = require("passport-jwt").ExtractJwt;
+const db = require('../models');
+const keys = require("../config/keys");
+const opts = {};
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.secretOrKey = keys.secretOrKey;
+
+module.exports = function(passport) {
+    passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
+        db
+            .User
+            .findOne({
+                where: {
+                    id: jwt_payload.id
+                }
+            })
+            .then(user => {
+                if (user) {
+                    return done(null, user);
+                }
+                return done(null, false);
+            })
+            .catch(err => console.log(err))
+    }));
+
+    passport.serializeUser((user, cb) => {
+        cb(null, user);
+    });
+
+    passport.deserializeUser((obj, cb) => {
+        cb(null, obj);
+    })
+}

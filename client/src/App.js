@@ -48,7 +48,7 @@ function App() {
                         component={LoginPage}/>
                     <Route exact path="/signup"
                         component={SignUpPage}/>
-                    <Route path="/movie"
+                    <Route path="/movie/:id"
                         component={MoviePage}/>
                     <Switch>
                         <PrivateRoute exact path="/profile"

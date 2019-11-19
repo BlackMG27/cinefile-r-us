@@ -18,8 +18,9 @@ class SearchPage extends Component {
 
     getID = id => {
         API.getMovieID(id).then(res => {
-            const movieID = res.data;
-            axios.post(`/api/movie/movie`, movieID).then(result => console.log("Success!")).catch(err => console.log(err));
+            const movie = res.data;
+            // put movie into axios
+            axios.post(`/api/movie/movie/:id`, movie).then(result => console.log("Success!")).catch(err => console.log(err));
         }).catch(err => console.log(err));
     }
 

@@ -15,11 +15,12 @@ class LoginPage extends Component {
         }
     }
 
-    componentDidMount() { // If logged in and user navigates to Login page, should redirect them to profile page
+    componentDidMount() { // If logged in and user navigates to Register page, should redirect them to profile
         if (this.props.auth.isAuthenticated) {
             this.props.history.push("/profile");
         }
     }
+
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.auth.isAuthenticated) {
@@ -142,5 +143,5 @@ LoginPage.propTypes = {
     auth: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired
 };
-const mapStateToProps = state => ({auth: state.auth, errors: state.errors});
+const mapStateToProps = state => ({auth: state.auth, errors: state.error});
 export default connect(mapStateToProps, {loginUser})(LoginPage);

@@ -1,12 +1,12 @@
 import React, {Component, Fragment} from 'react';
-import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {registerUser} from '../../redux/actions/authActions';
 import classnames from 'classnames';
 
-class SignUpPage extends Component {
+
+class SignUp extends Component {
     constructor() {
         super();
         this.state = {
@@ -54,21 +54,8 @@ class SignUpPage extends Component {
 
     render() {
         const {errors} = this.state;
-
         return (
             <Fragment>
-                <section className="register-title">
-                    <div className="row">
-                        <h2 className="heading-secondary">
-                            Hello, You Must Be New !</h2>
-                        <Link className="text-link" to="/">
-                            Back to Search</Link>
-                        <h3 className="heading-tertiary">
-                            Already have an account ?&nbsp;
-                            <Link className="text-link" to="/login">Login</Link>
-                        </h3>
-                    </div>
-                </section>
                 <section className="register">
                     <div className="row">
                         <form noValidate
@@ -206,13 +193,10 @@ class SignUpPage extends Component {
 
             </Fragment>
         )
-
     }
-
-
 }
 
-SignUpPage.propTypes = {
+SignUp.propTypes = {
     registerUser: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired
@@ -220,4 +204,4 @@ SignUpPage.propTypes = {
 
 const mapStateToProps = state => ({auth: state.auth, errors: state.errors});
 
-export default connect(mapStateToProps, {registerUser})(withRouter(SignUpPage));
+export default connect(mapStateToProps, {registerUser})(withRouter(SignUp));

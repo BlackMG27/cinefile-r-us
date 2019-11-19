@@ -1,11 +1,11 @@
 import React, {Fragment, Component} from 'react';
-import {Link} from 'react-router-dom';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {loginUser} from "../../redux/actions/authActions";
 import classnames from "classnames";
 
-class LoginPage extends Component {
+
+class SignIn extends Component {
     constructor() {
         super()
         this.state = {
@@ -20,6 +20,7 @@ class LoginPage extends Component {
             this.props.history.push("/profile");
         }
     }
+
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.auth.isAuthenticated) {
@@ -49,22 +50,8 @@ class LoginPage extends Component {
 
     render() {
         const {errors} = this.state;
-
         return (
             <Fragment>
-                <section className="login-title">
-                    <div className="row">
-                        <h2 className="heading-secondary">
-                            Welcome Back !</h2>
-                        <Link className="text-link" to="/">
-                            Back to Search</Link>
-
-                        <h3 className="heading-tertiary">
-                            Are You New ?
-                            <Link className="text-link" to="/signup">&nbsp;Please Register</Link>
-                        </h3>
-                    </div>
-                </section>
                 <section className="login">
                     <div className="row">
                         <form noValidate
@@ -131,16 +118,15 @@ class LoginPage extends Component {
                         </form>
                     </div>
                 </section>
-
             </Fragment>
         )
     }
-
 }
-LoginPage.propTypes = {
+
+SignIn.propTypes = {
     loginUser: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired
 };
 const mapStateToProps = state => ({auth: state.auth, errors: state.errors});
-export default connect(mapStateToProps, {loginUser})(LoginPage);
+export default connect(mapStateToProps, {loginUser})(SignIn);

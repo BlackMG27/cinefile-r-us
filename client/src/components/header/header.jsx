@@ -1,9 +1,5 @@
 import React, {Fragment} from 'react';
 import {Link} from 'react-router-dom';
-import SearchPage from './pages/search/search';
-import LoginPage from './pages/login/login';
-import SignUpPage from './pages/signup/signup';
-import UserPage from './pages/user/user';
 
 const Header = () => {
     return (

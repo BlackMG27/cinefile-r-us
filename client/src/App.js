@@ -11,6 +11,7 @@ import SearchPage from './pages/search/search';
 import LoginPage from './pages/login/login';
 import SignUpPage from './pages/signup/signup';
 import UserPage from './pages/user/user';
+import MoviePage from './pages/movie/movie';
 import Header from "./components/header/header";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import './App.css';
@@ -47,11 +48,12 @@ function App() {
                         component={LoginPage}/>
                     <Route exact path="/signup"
                         component={SignUpPage}/>
+                    <Route path="/movie"
+                        component={MoviePage}/>
                     <Switch>
-                        <PrivateRoute path="/profile"
+                        <PrivateRoute exact path="/profile"
                             component={UserPage}/>
                     </Switch>
-
 
                 </BrowserRouter>
             </Fragment>

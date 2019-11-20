@@ -17,6 +17,8 @@ class UserPage extends Component {
                 <section className="profile-title">
                     <h1>Welcome, {
                         user.name
+                    }, AKA {
+                        user.username
                     }!</h1>
                     <button className="button sign-out-button"
                         onClick={

@@ -94,7 +94,8 @@ router.post('/login', (req, res) => {
                         //create the payload
                         const payload = {
                                 id: user.userId,
-                                name: user.username
+                                name: user.name,
+                                username: user.username
                             }
                             //Sign Token
                         console.log(payload);

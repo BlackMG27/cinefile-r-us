@@ -23,7 +23,7 @@ app.use(passport.initialize());
 require("./config/passport")(passport);
 //routes
 app.use('/api/users', users);
-app.use("/api/movie", movie)
+app.use(movie)
     // Start the API server
 db
     .sequelize
@@ -34,3 +34,4 @@ db
                 console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
             });
     })
+    .catch(err => console.log("Something went wrong!"))

@@ -41,7 +41,6 @@ function App() {
             <Fragment>
                 <BrowserRouter>
                     <Header/>
-
                     <Route exact path="/"
                         component={SearchPage}/>
                     <Route exact path="/login"

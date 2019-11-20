@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-router.get('/movie', (req, res) => {
+router.get('/api/movie/:id', (req, res) => {
     res.json(req.body);
 })
 

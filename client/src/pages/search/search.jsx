@@ -1,5 +1,4 @@
 import React, {Fragment, Component} from 'react';
-import axios from 'axios';
 import API from "../../utils/API";
 class SearchPage extends Component {
 
@@ -19,8 +18,9 @@ class SearchPage extends Component {
     getID = id => {
         API.getMovieID(id).then(res => {
             const movie = res.data;
+            console.log(movie);
             // put movie into axios
-            axios.post(`/api/movie/movie/:id`, movie).then(result => console.log("Success!")).catch(err => console.log(err));
+            API.getMovie(movie).then(result => console.log("Success!")).catch(err => console.log(err));
         }).catch(err => console.log(err));
     }
 

@@ -20,10 +20,6 @@ export default {
                 "x-rapidapi-key": "A4fAXEqavNmshH7rDZ0elOxkEKP3p1jik56jsnQp8S113Hg0RO"
             }
         })
-    },
-
-    getMovie: movie => {
-        return axios.post(`/api/movie`, movie);
     }
 
 }

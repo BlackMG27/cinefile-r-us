@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 const passport = require('passport');
 const users = require("./routes/api/users");
-const movie = require("./routes/api/movie");
+
 //get our models
 const db = require('./models');
 
@@ -23,8 +23,7 @@ app.use(passport.initialize());
 require("./config/passport")(passport);
 //routes
 app.use('/api/users', users);
-app.use(movie)
-    // Start the API server
+// Start the API server
 db
     .sequelize
     .sync()

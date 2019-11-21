@@ -12,7 +12,9 @@ class SearchPage extends Component {
     searchMovies = movie => { // replace all the spaces so that it goes through
         movie = movie.replace(/ /g, '%20');
         // put movie through the api
-        API.searchMovies(movie).then(res => this.setState({movies: res.data.Search})).catch(err => console.log(err));
+        API.searchMovies(movie).then(res => {
+            this.setState({movies: res.data.Search})
+        }).catch(err => console.log(err));
     }
 
     getID = id => {
@@ -20,7 +22,9 @@ class SearchPage extends Component {
             const movie = res.data;
             console.log(movie);
             // put movie into axios
-            API.getMovie(movie).then(result => console.log("Success!")).catch(err => console.log(err));
+            this.props.history.push(`/movie/${
+                movie.imdbID
+            }`, movie);
         }).catch(err => console.log(err));
     }
 
@@ -67,6 +71,7 @@ class SearchPage extends Component {
                 <section className="search-results">
                     <div className="row">
                         {
+
                         this.state.movies.map((movie, index) => <div className="movie-result"
                             key={index}>
                             <div className="movie-result__container">

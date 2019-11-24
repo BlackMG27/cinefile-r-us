@@ -5,6 +5,13 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: DataTypes.UUIDV1,
             primaryKey: true
         },
+        reviewer: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                len: [1]
+            }
+        },
         reviewTitle: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -30,6 +37,10 @@ module.exports = function(sequelize, DataTypes) {
         imdbId: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        activeReview: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
         }
     });
 

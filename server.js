@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3001;
 const app = express();
 const passport = require('passport');
-const users = require("./routes/api/users");
+const apiRoutes = require('./routes');
 
 //get our models
 const db = require('./models');
@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(passport.initialize());
 require("./config/passport")(passport);
 //routes
-app.use('/api/users', users);
+app.use(apiRoutes);
 // Start the API server
 db
     .sequelize

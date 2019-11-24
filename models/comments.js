@@ -18,6 +18,10 @@ module.exports = function(sequelize, DataTypes) {
             validate: {
                 len: [25, 500]
             }
+        },
+        activeComment: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
         }
     });
     Comment.associate = function(models) {

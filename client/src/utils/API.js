@@ -20,6 +20,47 @@ export default {
                 "x-rapidapi-key": "A4fAXEqavNmshH7rDZ0elOxkEKP3p1jik56jsnQp8S113Hg0RO"
             }
         })
+    },
+    createReview: review => {
+        const data = {
+            data: review
+        }
+        return axios.post('/api/review/', data);
+    },
+
+    showMovieReviews: id => {
+        return axios.get('/api/review/movie/' + id);
+    },
+
+    editReview: review => {
+        return axios.put('/api/review/edit', review);
+    },
+
+    archiveReview: id => {
+        return axios.post('/api/review/archive/' + id);
+    },
+
+    showUserReviews: id => {
+        return axios.get('/api/review/profile/');
+    },
+
+    createComment: comment => {
+        const data = {
+            data: comment
+        }
+        return axios.post('/api/comment', data);
+    },
+
+    showCommentsByReview: id => {
+        return axios.get('/api/comment/review/' + id);
+    },
+
+    showCommentsByUser: id => {
+        return axios.get('/api/comment/profile/' + id);
+    },
+
+    archiveComment: id => {
+        return axios.post('/api/comment/archive/' + id);
     }
 
 }

@@ -20,8 +20,7 @@ class SearchPage extends Component {
     getID = id => {
         API.getMovieID(id).then(res => {
             const movie = res.data;
-            console.log(movie);
-            // put movie into axios
+            // put movie info to MoviePage component
             this.props.history.push(`/movie/${
                 movie.imdbID
             }`, movie);

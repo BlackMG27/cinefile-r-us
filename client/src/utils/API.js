@@ -22,10 +22,7 @@ export default {
         })
     },
     createReview: review => {
-        const data = {
-            data: review
-        }
-        return axios.post('/api/review/', data);
+        return axios.post('/api/review/', review);
     },
 
     showMovieReviews: id => {
@@ -41,14 +38,11 @@ export default {
     },
 
     showUserReviews: id => {
-        return axios.get('/api/review/profile/');
+        return axios.get('/api/review/profile/' + id);
     },
 
     createComment: comment => {
-        const data = {
-            data: comment
-        }
-        return axios.post('/api/comment', data);
+        return axios.post('/api/comment', comment);
     },
 
     showCommentsByReview: id => {

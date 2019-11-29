@@ -28,7 +28,7 @@ module.exports = {
     createComment: (req, res) => {
         db
             .Comment
-            .create({ username: req.body.data.username, commentText: req.body.data.commentText })
+            .create({ username: req.body.username, commentText: req.body.commentText })
             .then(comment => res.json(comment))
             .catch(err => res.status(422).json(err))
     },

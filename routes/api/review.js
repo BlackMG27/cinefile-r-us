@@ -24,6 +24,6 @@ router
 //archive reviews
 router
     .route('/archive/:id')
-    .put(reviewController.archiveReviews);
+    .post(reviewController.archiveReviews);
 
 module.exports = router;

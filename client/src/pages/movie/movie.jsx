@@ -9,7 +9,7 @@ class MoviePage extends Component {
         super();
         this.state = {
             reviewTitle: '',
-            reviewRating: 3,
+            rating: 5,
             reviewText: '',
             movieTitle: '',
             imdbID: '',
@@ -30,6 +30,7 @@ class MoviePage extends Component {
         API.showMovieReviews(this.props.location.state.imdbID).then((reviews => {
             API.showCommentsByReview(reviews.reviewId).then(comment => console.log("Success", comment)).catch(err => console.log(err));
         })).catch(err => console.log(err));
+
     }
 
     showForm = () => {
@@ -42,23 +43,24 @@ class MoviePage extends Component {
 
     handleRate = (e, {rating, maxRating}) => {
         this.setState({rating, maxRating});
+        console.log(this.state.rating);
     }
 
     onChange = e => {
         this.setState({[e.target.id]: e.target.value});
     }
 
-    onSubmit = e => {
+    handleSubmit = e => {
         e.preventDefault();
+        let {user} = this.props.auth;
+        let movie = this.props.location.state;
         this.setState({reviewSubmitted: true})
-
-        this.makeReview(this.state.reviewer, this.state.imdbID, this.state.reviewTitle, this.state.reviewRating, this.state.reviewText, this.state.movieTitle);
-
+        this.makeReview(user.username, movie.imdbID, this.state.reviewTitle, this.state.rating, this.state.reviewText, movie.Title);
+        // send the form elements to the REST api
 
     }
 
-    makeReview = (reviewer, id, title, rating, text, mTitle) => {
-
+    makeReview = (reviewer, id, title, rating, text, mTitle) => { // creates the object to send to the REST api
         const review = {
             reviewer: reviewer,
             imdbId: id,
@@ -67,19 +69,29 @@ class MoviePage extends Component {
             reviewText: text,
             movieTitle: mTitle
         }
-        API.createReview(review).then((review)).catch(err => console.log(err));
+        // sends object to the REST API
+        console.log(review);
+        API.createReview(review).then((review => console.log("Success", review))).catch(err => console.log(err));
 
     }
 
     render() {
-        const movie = this.props.location.state;
-        const {user} = this.props.auth;
-        const movieID = movie.imdbID;
-        const title = movie.Title;
+        let movie = this.props.location.state;
+        let {user} = this.props.auth;
+        const username = {
+            [this.state.reviewer]: user.username
+        };
+        const movieID = {
+            [this.state.imdbID]: movie.imdbID
+        };
+        const title = {
+            [this.state.movieTitle]: movie.Title
+        };
         let totalReviewLength = this.state.reviewCharsLeft - this.state.reviewText.length;
         let totalCommentLength = this.state.commentCharsLeft - this.state.commentText.length;
         const greaterThan25 = totalReviewLength >= 25;
         const lessThan1000 = totalReviewLength <= 1000;
+
 
         return (
             <Fragment>
@@ -114,32 +126,39 @@ class MoviePage extends Component {
                         <div className="make-review__form-area">
                             <form noValidate className="make-review__form"
                                 onSubmit={
-                                    this.onSubmit
+                                    this.handleSubmit
                             }>
-                                <h5 className="heading-5"
-                                    defaultValue={
-                                        this.state.reviewer
-                                }>
-                                    {
-                                    user.username
-                                }</h5>
-                                <p style={
-                                        {display: 'none'}
-                                    }
-                                    defaultValue={
-                                        this.state.imdbID
-                                }>
-                                    {movieID}</p>
-                                <p style={
-                                        {display: 'none'}
-                                    }
-                                    value={
-                                        this.state.movieTitle
-                                }>
-                                    {title}</p>
+                                <div className="form__group">
+                                    <label className="form__label" htmlFor="reviewer">Reviewer</label>
+                                    <input type="text" className="form__input" readOnly
+
+                                        value={
+                                            username[this.state.reviewer]
+                                        }
+                                        id="reviewer"
+                                        required/>
+                                </div>
+                                <div className="form__group">
+                                    <label className="form__label" htmlFor="movieID">Movie ID</label>
+                                    <input type="text" className="form__input" readOnly
+
+                                        value={
+                                            movieID[this.state.imdbID]
+                                        }
+                                        required/>
+                                </div>
+                                <div className="form__group">
+                                    <label className="form__label" htmlFor="movieTitle">Movie Title</label>
+                                    <input type="text" className="form__input" readOnly
+
+                                        value={
+                                            title[this.state.movieTitle]
+                                        }
+                                        required/>
+                                </div>
                                 <div className="form__group">
                                     <label className="form__label" htmlFor="reviewTitle">Review Title</label>
-                                    <input type="text"
+                                    <input type="text" required
                                         value={
                                             this.state.reviewTitle
                                         }
@@ -150,16 +169,14 @@ class MoviePage extends Component {
                                 </div>
                                 <div className="form__group">
                                     <label className="form__label" htmlFor="reviewRating">Rating</label>
-                                    <Rating defaultRating={3}
-                                        maxRating={5}
+                                    <Rating maxRating={10}
+                                        defaultRating={1}
                                         icon="star"
                                         size="huge"
-                                        value={
-                                            this.state.reviewRating
-                                        }
-                                        onRate={
-                                            this.handleRate
-                                        }/>
+                                        id="reviewRating"
+                                        onRate
+                                        ={this.handleRate}
+                                        required/>
 
                                 </div>
                                 <div className="form__group">
@@ -176,7 +193,7 @@ class MoviePage extends Component {
                                         onFocus={
                                             (greaterThan25 && lessThan1000) ? this.showButton : null
                                         }
-
+                                        required
                                         className="form__message"></textarea>
                                     <p className="form__char-left">
                                         {totalReviewLength}
@@ -190,6 +207,7 @@ class MoviePage extends Component {
                         </div>
                     ) : null
                 } </section>
+                <section className="review__list"></section>
 
             </Fragment>
 

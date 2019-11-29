@@ -50,7 +50,7 @@ function App() {
                     <Route path="/movie/:id"
                         component={MoviePage}/>
                     <Switch>
-                        <PrivateRoute exact path="/profile"
+                        <PrivateRoute exact path="/profile/:id"
                             component={UserPage}/>
                     </Switch>
 

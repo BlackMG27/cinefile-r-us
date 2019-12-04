@@ -14,6 +14,8 @@ class MoviePage extends Component {
             movieTitle: '',
             imdbID: '',
             reviewer: '',
+            review: [],
+            comment: [],
             commenter: '',
             commentText: '',
             showForm: false,
@@ -27,10 +29,20 @@ class MoviePage extends Component {
     }
 
     componentDidMount() {
-        API.showMovieReviews(this.props.location.state.imdbID).then((reviews => {
-            API.showCommentsByReview(reviews.reviewId).then(comment => console.log("Success", comment)).catch(err => console.log(err));
-        })).catch(err => console.log(err));
+        API.showMovieReviews(this.props.location.state.imdbID).then((res => {
+            this.setState({
+                review: res.data.review.filter(review => review.activeReview)
+            })
 
+        })).catch(err => console.log(err));
+    }
+
+    componentDidUpdate() {
+        API.showMovieReviews(this.props.location.state.imdbID).then((res => {
+            this.setState({
+                review: res.data.review.filter(review => review.activeReview)
+            })
+        })).catch(err => console.log(err));
     }
 
     showForm = () => {
@@ -68,7 +80,7 @@ class MoviePage extends Component {
             rating: rating,
             reviewText: text,
             movieTitle: mTitle,
-            UserId: userId
+            UserUserId: userId
         }
         // sends object to the REST API
         console.log(review);

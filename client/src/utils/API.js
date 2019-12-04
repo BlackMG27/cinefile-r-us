@@ -58,6 +58,10 @@ export default {
 
     archiveComment: id => {
         return axios.post('/api/comment/archive/' + id);
+    },
+
+    getUserProfile: id => {
+        return axios.get(`/api/users/profile/${id}`);
     }
 
 }

@@ -12,6 +12,7 @@ class Header extends Component {
     }
 
     render() {
+        const {user} = this.props.auth;
 
         return (
             <Fragment>
@@ -28,7 +29,11 @@ class Header extends Component {
                             <Link to="/signup">Sign Up</Link>
                         </li>
                         <li className="nav__link">
-                            <Link to="/profile">Profile</Link>
+                            <Link to={
+                                `/profile/${
+                                    user.id
+                                }`
+                            }>Profile</Link>
                         </li>
                         <li className="nav__link"
                             onClick={

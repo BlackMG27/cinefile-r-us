@@ -16,7 +16,6 @@ import Header from "./components/header/header";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import './App.css';
 
-
 // Check for token to keep user logged in
 if (localStorage.jwtToken) { // Set auth token header auth
     const token = localStorage.jwtToken;
@@ -33,7 +32,6 @@ if (localStorage.jwtToken) { // Set auth token header auth
         window.location.href = "./login";
     }
 }
-
 
 function App() {
     return (

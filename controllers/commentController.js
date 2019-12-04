@@ -7,12 +7,12 @@ module.exports = {
             .Comment
             .findAll({
                 where: {
-                    reviewId: id,
+                    ReviewReviewId: id,
                     activeComment: true
                 }
             })
             .then(comment => res.json(comment))
-            .catch(err => res.status(422).json(err))
+            .catch(err => console.log(err))
     },
     findUserComments: (req, res) => {
         const id = req.params.id;
@@ -20,7 +20,7 @@ module.exports = {
             .Comment
             .findAll({
                 where: {
-                    userId: id
+                    UserUserId: id
                 }
             })
             .then(comment => res.json(comment))
@@ -29,7 +29,7 @@ module.exports = {
     createComment: (req, res) => {
         db
             .Comment
-            .create({ username: req.body.username, commentText: req.body.commentText })
+            .create({ username: req.body.username, commentText: req.body.commentText, ReviewReviewId: req.body.reviewId, UserUserId: req.body.userId })
             .then(comment => res.json(comment))
             .catch(err => res.status(422).json(err))
     },

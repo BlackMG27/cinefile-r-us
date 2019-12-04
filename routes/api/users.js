@@ -7,9 +7,15 @@ const keys = require("../../config/keys");
 //grab the login/signup validation
 const validateLoginInput = require("../../validation/login");
 const validateSignupInput = require("../../validation/signup");
-//grab the user model
+//grab the user model and controller
 const db = require("../../models");
 const dbUser = db.User;
+const userController = require('../../controllers/userController');
+
+//get the user profile
+router
+    .route('/profile/:id')
+    .get(userController.getUserProfile);
 
 //@route POST api/users/signup // @desc Register, user @access Public
 router.post("/signup", (req, res) => {

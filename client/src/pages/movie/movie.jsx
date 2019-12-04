@@ -55,19 +55,20 @@ class MoviePage extends Component {
         let {user} = this.props.auth;
         let movie = this.props.location.state;
         this.setState({reviewSubmitted: true})
-        this.makeReview(user.username, movie.imdbID, this.state.reviewTitle, this.state.rating, this.state.reviewText, movie.Title);
+        this.makeReview(user.username, movie.imdbID, this.state.reviewTitle, this.state.rating, this.state.reviewText, movie.Title, user.id);
         // send the form elements to the REST api
 
     }
 
-    makeReview = (reviewer, id, title, rating, text, mTitle) => { // creates the object to send to the REST api
+    makeReview = (reviewer, id, title, rating, text, mTitle, userId) => { // creates the object to send to the REST api
         const review = {
             reviewer: reviewer,
             imdbId: id,
             reviewTitle: title,
             rating: rating,
             reviewText: text,
-            movieTitle: mTitle
+            movieTitle: mTitle,
+            UserId: userId
         }
         // sends object to the REST API
         console.log(review);

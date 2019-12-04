@@ -2,20 +2,24 @@ const db = require('../models');
 
 module.exports = {
     findReviews: (req, res) => {
-        const id = req.params.imdbId
+        const id = req.params.id
         db
             .Review
             .findAll({
+                attributes: [
+                    'username', 'reviewTitle', 'rating', 'reviewText', 'createdAt'
+                ],
                 where: {
-                    imdbId: id
+                    imdbId: id,
+                    activeReview: true
                 }
             })
             .then(reviews => res.json(reviews))
-            .catch(err => res.status(422).json(err))
+            .catch(err => console.log(err))
     },
 
     findUserReviews: (req, res) => {
-        const id = req.params.userId;
+        const id = req.params.id;
         db
             .Review
             .findAll({
@@ -31,19 +35,20 @@ module.exports = {
         db
             .Review
             .create({
-                reviewer: req.body.reviewer,
+                username: req.body.reviewer,
                 reviewTitle: req.body.reviewTitle,
                 rating: req.body.rating,
                 reviewText: req.body.reviewText,
                 imdbId: req.body.imdbId,
-                movieTitle: req.body.movieTitle
+                movieTitle: req.body.movieTitle,
+                UserUserId: req.body.UserId
             })
             .then(review => res.json(review))
-            .catch(err => res.status(422).json(err))
+            .catch(err => console.log(err))
     },
 
     editReviews: (req, res) => {
-        const id = req.params.reviewId;
+        const id = req.params.id;
 
         db
             .Review
@@ -61,7 +66,7 @@ module.exports = {
     },
     archiveReviews: (req, res) => {
         //grab the id
-        const id = req.body.reviewId;
+        const id = req.body.id;
         //create an object to make activeReview false
         const reviewObj = {
                 activeReview: false

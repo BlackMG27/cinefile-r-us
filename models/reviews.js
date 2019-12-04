@@ -5,7 +5,7 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: DataTypes.UUIDV1,
             primaryKey: true
         },
-        reviewer: {
+        username: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {

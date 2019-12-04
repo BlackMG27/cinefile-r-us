@@ -21,12 +21,14 @@ export default {
             }
         })
     },
-    createReview: review => {
-        return axios.post('/api/review/', review);
+    createReview: async review => {
+        const createReview = await axios.post('/api/review/', review);
+        return createReview;
     },
 
-    showMovieReviews: id => {
-        return axios.get('/api/review/movie/' + id);
+    showMovieReviews: async id => {
+        const showMovieReviews = await axios.get('/api/review/movie/' + id);
+        return showMovieReviews;
     },
 
     editReview: review => {
@@ -45,8 +47,9 @@ export default {
         return axios.post('/api/comment', comment);
     },
 
-    showCommentsByReview: id => {
-        return axios.get('/api/comment/review/' + id);
+    showCommentsByReview: async id => {
+        const showCommentsByReview = await axios.get('/api/comment/review/' + id);
+        return showCommentsByReview;
     },
 
     showCommentsByUser: id => {

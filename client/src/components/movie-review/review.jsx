@@ -50,7 +50,6 @@ class MovieReview extends Component {
             commentText: comment,
             reviewId: reviewId
         }
-        let {reviewId} = this.props.review;
 
         API.createComment(commentSub).then(res => {
             console.log("Success", res.data)
@@ -124,11 +123,11 @@ class MovieReview extends Component {
                                                 this.onChange
                                             }
                                             onFocus={
-                                                (greaterThan25 && lessThan500) ? this.showButton : null
+                                                (greaterCThan25 && lessCThan500) ? this.showButton : null
                                         }></textarea>
                                         <p className="form__chars-left">
                                             {totalCommentLength}&nbsp;
-                                                                                    characters left
+                                                                                      characters left
                                         </p>
                                     </div>
                                     {

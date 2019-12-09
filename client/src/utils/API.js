@@ -43,8 +43,9 @@ export default {
         return axios.get('/api/review/profile/' + id);
     },
 
-    createComment: comment => {
-        return axios.post('/api/comment', comment);
+    createComment: async comment => {
+        const createComment = await axios.post('/api/comment/', comment);
+        return createComment;
     },
 
     showCommentsByReview: async id => {

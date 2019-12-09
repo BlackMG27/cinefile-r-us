@@ -31,7 +31,7 @@ module.exports = {
             .Comment
             .create({ username: req.body.username, commentText: req.body.commentText, ReviewReviewId: req.body.reviewId, UserUserId: req.body.userId })
             .then(comment => res.json(comment))
-            .catch(err => res.status(422).json(err))
+            .catch(err => console.log(err))
     },
     archiveComment: (req, res) => {
         const id = req.params.id;

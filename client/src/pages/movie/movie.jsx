@@ -2,8 +2,10 @@ import React, {Fragment, Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {Rating} from 'semantic-ui-react';
+import Moment from 'react-moment';
 import API from '../../utils/API';
 import MovieInfo from '../../components/movie-info/movie-info';
+import MovieComment from '../../components/movie-comment/comment';
 class MoviePage extends Component {
     constructor() {
         super();
@@ -16,32 +18,23 @@ class MoviePage extends Component {
             reviewer: '',
             review: [],
             comment: [],
-            commenter: '',
             commentText: '',
             showForm: false,
             showButton: false,
             reviewSubmitted: false,
-            commentSubmitted: false,
             reviewCharsLeft: 1000,
-            commentCharsLeft: 500
+            commentCharsLeft: 500,
+            commentSubmitted: false,
+            showCommentForm: false,
+            showSubmitButton: false
+
         }
 
     }
 
     componentDidMount() {
         API.showMovieReviews(this.props.location.state.imdbID).then((res => {
-            this.setState({
-                review: res.data.review.filter(review => review.activeReview)
-            })
-
-        })).catch(err => console.log(err));
-    }
-
-    componentDidUpdate() {
-        API.showMovieReviews(this.props.location.state.imdbID).then((res => {
-            this.setState({
-                review: res.data.review.filter(review => review.activeReview)
-            })
+            this.setState({review: res.data});
         })).catch(err => console.log(err));
     }
 
@@ -53,6 +46,28 @@ class MoviePage extends Component {
         this.setState({showButton: true});
     }
 
+    showCommentButton = () => {
+        this.setState({showCommentForm: true})
+    }
+
+    showCButton = () => {
+        this.setState({showSubmitButton: true})
+    }
+
+    showComments = id => {
+        let loaded = false;
+        if (loaded) {
+            console.log(loaded);
+            API.showCommentsByReview(id).then(com => {
+                this.setState({comment: com.data})
+            }).catch(err => console.log(err))
+            loaded = true;
+        } else {
+            return;
+        }
+    }
+
+
     handleRate = (e, {rating, maxRating}) => {
         this.setState({rating, maxRating});
         console.log(this.state.rating);
@@ -61,6 +76,31 @@ class MoviePage extends Component {
     onChange = e => {
         this.setState({[e.target.id]: e.target.value});
     }
+
+    onSubmit = e => {
+        e.preventDefault();
+
+    }
+
+    commentSetUp = id => {
+        let {user} = this.props.auth;
+        this.makeComment(user.id, user.username, this.state.commentText, id)
+
+    }
+
+    makeComment = (userId, username, comment, reviewId) => {
+        const commentSub = {
+            username: username,
+            userId: userId,
+            commentText: comment,
+            reviewId: reviewId
+        }
+
+        API.createComment(commentSub).then(res => {
+            console.log("Success", res.data)
+        }).catch(err => console.log(err))
+    }
+
 
     handleSubmit = e => {
         e.preventDefault();
@@ -83,27 +123,20 @@ class MoviePage extends Component {
             UserUserId: userId
         }
         // sends object to the REST API
-        console.log(review);
-        API.createReview(review).then((review => console.log("Success", review))).catch(err => console.log(err));
+        API.createReview(review).then((review)).catch(err => console.log(err));
 
     }
 
     render() {
         let movie = this.props.location.state;
         let {user} = this.props.auth;
-        const username = {
-            [this.state.reviewer]: user.username
-        };
-        const movieID = {
-            [this.state.imdbID]: movie.imdbID
-        };
-        const title = {
-            [this.state.movieTitle]: movie.Title
-        };
+
         let totalReviewLength = this.state.reviewCharsLeft - this.state.reviewText.length;
+        let greaterThan25 = totalReviewLength >= 25;
+        let lessThan1000 = totalReviewLength <= 1000;
         let totalCommentLength = this.state.commentCharsLeft - this.state.commentText.length;
-        const greaterThan25 = totalReviewLength >= 25;
-        const lessThan1000 = totalReviewLength <= 1000;
+        const greaterCThan25 = totalCommentLength >= 25;
+        const lessCThan500 = totalCommentLength <= 500;
 
 
         return (
@@ -141,34 +174,6 @@ class MoviePage extends Component {
                                 onSubmit={
                                     this.handleSubmit
                             }>
-                                <div className="form__group">
-                                    <label className="form__label" htmlFor="reviewer">Reviewer</label>
-                                    <input type="text" className="form__input" readOnly
-
-                                        value={
-                                            username[this.state.reviewer]
-                                        }
-                                        id="reviewer"
-                                        required/>
-                                </div>
-                                <div className="form__group">
-                                    <label className="form__label" htmlFor="movieID">Movie ID</label>
-                                    <input type="text" className="form__input" readOnly
-
-                                        value={
-                                            movieID[this.state.imdbID]
-                                        }
-                                        required/>
-                                </div>
-                                <div className="form__group">
-                                    <label className="form__label" htmlFor="movieTitle">Movie Title</label>
-                                    <input type="text" className="form__input" readOnly
-
-                                        value={
-                                            title[this.state.movieTitle]
-                                        }
-                                        required/>
-                                </div>
                                 <div className="form__group">
                                     <label className="form__label" htmlFor="reviewTitle">Review Title</label>
                                     <input type="text" required
@@ -220,9 +225,100 @@ class MoviePage extends Component {
                         </div>
                     ) : null
                 } </section>
-                <section className="review__list"></section>
+                {
+                this.state.review.map(el => (
+                    <section className="movie-section"
+                        key={
+                            el.reviewId
+                        }
+                        onLoad={
+                            () => this.showComments(el.reviewId)
+                    }>
+                        <div className="row">
+                            <div className="movie-review">
+                                <h4 className="movie-review__user">
+                                    {
+                                    el.username
+                                }</h4>
+                                <h2 className="movie-review__header">
+                                    {
+                                    el.reviewTitle
+                                }</h2>
+                                <Rating disabled={true}
+                                    maxRating={10}
+                                    rating={
+                                        el.rating
+                                    }
+                                    className="movie-review__rating"/>
+                                <span className="movie-review__date">
+                                    <Moment format="MM-DD-YYYYTHH:mm" parse="YYYY/MM/DD hh:mm">
+                                        {
+                                        el.createdAt
+                                    }</Moment>
+                                </span>
+                                <p className="movie-review__text">
+                                    {
+                                    el.reviewText
+                                }</p>
+                                {
+                                (user.id) ? (
+                                    <button onClick={
+                                            this.showCommentButton
+                                        }
+                                        className="button comment-button">Make a Comment</button>
+                                ) : null
+                            } </div>
+                        </div>
+                        <div className="row">
+                            {
+                            this.state.showCommentForm ? (
+                                <div className="comment-form-area">
+                                    <form noValidate
+                                        onSubmit={
+                                            this.onSubmit
+                                        }
+                                        className="comment-form">
+                                        <div className="form__group">
+                                            <label className="form__label" htmlFor="commentText">Make Your Comment</label>
+                                            <textarea name="message" id="commentText" cols="30" rows="10" className="form__message"
+                                                value={
+                                                    this.state.commentText
+                                                }
+                                                onChange={
+                                                    this.onChange
+                                                }
+                                                onFocus={
+                                                    (greaterCThan25 && lessCThan500) ? this.showCButton : null
+                                            }></textarea>
+                                            <p className="form__chars-left">
+                                                {totalCommentLength}
+                                                characters left
+                                            </p>
+                                        </div>
+                                        {
+                                        this.state.showSubmitButton ? (
+                                            <button className="button form__button" type="submit"
+                                                onClick={
+                                                    () => this.commentSetUp(el.reviewId)
+                                            }>
+                                                Submit Comment</button>
 
-            </Fragment>
+                                        ) : null
+                                    } </form>
+                                </div>
+                            ) : null
+                        } </div>
+                        {
+                        this.state.comment.map(el => (
+                            <MovieComment key={
+                                    el.commentId
+                                }
+                                comment={el}/>
+                        ))
+                    } </section>
+
+                ))
+            } </Fragment>
 
         )
     }

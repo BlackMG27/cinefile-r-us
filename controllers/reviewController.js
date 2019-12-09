@@ -6,9 +6,6 @@ module.exports = {
         db
             .Review
             .findAll({
-                attributes: [
-                    'username', 'reviewTitle', 'rating', 'reviewText', 'createdAt'
-                ],
                 where: {
                     imdbId: id,
                     activeReview: true

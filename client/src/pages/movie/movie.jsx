@@ -48,11 +48,6 @@ class MoviePage extends Component {
         this.setState({[e.target.id]: e.target.value});
     }
 
-    onSubmit = e => {
-        e.preventDefault();
-
-    }
-
     handleSubmit = e => {
         e.preventDefault();
         let {user} = this.props.auth;
@@ -81,11 +76,9 @@ class MoviePage extends Component {
     render() {
         let movie = this.props.location.state;
         let {user} = this.props.auth;
-
         let totalReviewLength = this.state.reviewCharsLeft - this.state.reviewText.length;
         let greaterThan25 = totalReviewLength >= 25;
         let lessThan1000 = totalReviewLength <= 1000;
-
 
         return (
             <Fragment>
@@ -172,15 +165,16 @@ class MoviePage extends Component {
                             } </form>
                         </div>
                     ) : null
+                }
+                    {
+                    this.state.review.map(item => (
+                        <MovieReview key={
+                                item.reviewId
+                            }
+                            review={item}/>
+                    ))
                 } </section>
-                {
-                this.state.review.map(el => (
-                    <MovieReview key={
-                            el.reviewId
-                        }
-                        review={el}/>
-                ))
-            } </Fragment>
+            </Fragment>
 
         )
     }

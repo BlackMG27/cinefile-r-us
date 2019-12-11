@@ -21,7 +21,8 @@ module.exports = {
             .Review
             .findAll({
                 where: {
-                    UserUserId: id
+                    UserUserId: id,
+                    activeReview: true
                 }
             })
             .then(reviews => res.json(reviews))

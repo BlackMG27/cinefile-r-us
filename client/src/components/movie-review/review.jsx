@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import Moment from 'react-moment';
+import {connect} from 'react-redux';
 import {Rating} from 'semantic-ui-react';
 import API from '../../utils/API';
 import MovieComment from '../movie-comment/comment';
@@ -70,7 +71,6 @@ class MovieReview extends Component {
             reviewId
         } = this.props.review;
         let {user} = this.props.auth;
-        console.log(user);
         let totalCommentLength = this.state.commentCharsLeft - this.state.commentText.length;
         const greaterCThan25 = totalCommentLength >= 25;
         const lessCThan500 = totalCommentLength <= 500;
@@ -126,8 +126,7 @@ class MovieReview extends Component {
                                                 (greaterCThan25 && lessCThan500) ? this.showButton : null
                                         }></textarea>
                                         <p className="form__chars-left">
-                                            {totalCommentLength}&nbsp;
-                                                                                      characters left
+                                            {totalCommentLength}&nbsp; characters left
                                         </p>
                                     </div>
                                     {
@@ -153,5 +152,5 @@ class MovieReview extends Component {
         )
     }
 }
-
-export default MovieReview;
+const mapStateToProps = state => ({auth: state.auth});
+export default connect(mapStateToProps)(MovieReview);

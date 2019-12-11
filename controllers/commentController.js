@@ -20,7 +20,8 @@ module.exports = {
             .Comment
             .findAll({
                 where: {
-                    UserUserId: id
+                    UserUserId: id,
+                    activeComment: true
                 }
             })
             .then(comment => res.json(comment))

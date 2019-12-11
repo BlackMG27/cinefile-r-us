@@ -35,13 +35,16 @@ class Header extends Component {
                                 }`
                             }>Profile</Link>
                         </li>
-                        <li className="nav__link"
-                            onClick={
-                                this.onLogOutClick
-                        }>
-                            <Link to="/login">Sign Out</Link>
-                        </li>
-                    </ul>
+                        {
+                        (user.id) ? (
+                            <li className="nav__link"
+                                onClick={
+                                    this.onLogOutClick
+                            }>
+                                <Link to="/login">Sign Out</Link>
+                            </li>
+                        ) : null
+                    } </ul>
                 </header>
             </Fragment>
         )

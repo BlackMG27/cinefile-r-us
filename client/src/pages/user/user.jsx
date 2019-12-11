@@ -12,6 +12,7 @@ class UserPage extends Component {
             reviews: [],
             comments: [],
             displayName: '',
+            name: '',
             email: ''
         }
     }
@@ -19,19 +20,15 @@ class UserPage extends Component {
     componentDidMount() {
         const {user} = this.props.auth;
         API.getUserProfile(user.id).then(res => {
-            this.setState({displayName: res.data.username, email: res.data.email})
+            this.setState({displayName: res.data.username, email: res.data.email, name: res.data.name})
         }).catch(err => console.log(err))
 
         API.showUserReviews(user.id).then(res => {
-            this.setState({
-                review: res.data.filter(el => el.activeReview)
-            })
+            this.setState({review: res.data})
         }).catch(err => console.log(err))
 
         API.showCommentsByUser(user.id).then(res => {
-            this.setState({
-                comment: res.data.filter(el => el.activeComment)
-            })
+            this.setState({comment: res.data})
         }).catch(err => console.log(err))
     }
 
@@ -49,6 +46,7 @@ class UserPage extends Component {
                         this.state.displayName
                     }</h1>
                 </section>
+                <section className="profile-data"></section>
             </Fragment>
         )
     }

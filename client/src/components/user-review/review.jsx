@@ -18,7 +18,9 @@ class UserReview extends Component {
             updatedAt
         } = this.props.review;
         return (
-            <Fragment></Fragment>
+            <Fragment>
+                <div className="profile-data__review"></div>
+            </Fragment>
         )
     }
 }
